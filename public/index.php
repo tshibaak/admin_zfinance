@@ -9,7 +9,7 @@ require dirname(__DIR__). DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR .
 Dotenv\Dotenv::createImmutable(dirname(__DIR__))->load();
 
 Router::Instance();
-// Database::Instance();
+Database::Instance();
 
 require dirname(__DIR__). DIRECTORY_SEPARATOR . 'routes' . DIRECTORY_SEPARATOR . 'web.php';
 require dirname(__DIR__). DIRECTORY_SEPARATOR . 'routes' . DIRECTORY_SEPARATOR . 'api.php';
