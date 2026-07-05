@@ -1,8 +1,6 @@
--- Schema for Zfinances app
 CREATE DATABASE IF NOT EXISTS zfinance;
 USE zfinance;
 
--- Contacts from contact form
 CREATE TABLE IF NOT EXISTS contacts (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(255) NOT NULL,
@@ -31,17 +29,19 @@ CREATE TABLE IF NOT EXISTS testimonials (
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-create table if not exists admins(
-  `id` int AUTO_INCREMENT primary key ,
-  `name` VARCHAR(30) not null unique,
-  `email` VARCHAR(50) not null unique,
-  `pass` VARCHAR(25) not null,
-  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+-- Admins table
+CREATE TABLE IF NOT EXISTS admins (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(30) NOT NULL UNIQUE,
+  `email` VARCHAR(50) NOT NULL UNIQUE,
+  `pass` VARCHAR(255) NOT NULL,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE Table if not exists articles(
-    `id` INT AUTO_INCREMENT PRIMARY KEY,
-    `content` TEXT,
-    `image` TEXT,
-    `link` TEXT
+-- Articles table
+CREATE TABLE IF NOT EXISTS articles (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `content` TEXT,
+  `image` TEXT,
+  `link` TEXT
 );
