@@ -8,11 +8,6 @@ use Router\Router;
 
 Router::get('/',[HomeController::class,'index']);
 
-Router::get('/login',function(){
-    View::view('auth.login');
-});
-
-
 Router::get('/admin/dashboard',[AdminController::class,'index']);
 Router::get('/admin/contacts',[AdminController::class,'contacts']);
 Router::get('/admin/newsletter',[AdminController::class,'newsletter']);

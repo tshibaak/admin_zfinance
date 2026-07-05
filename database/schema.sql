@@ -33,8 +33,8 @@ CREATE TABLE IF NOT EXISTS testimonials (
 
 create table if not exists admin(
   id int AUTO_INCREMENT primary key ,
-  nameAdmin VARCHAR(30) not null unique,
-  passAdmin VARCHAR(25) not null,
+  `name` VARCHAR(30) not null unique,
+  `pass` VARCHAR(25) not null,
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -45,4 +45,4 @@ CREATE Table if not exists articles(
     link TEXT
 );
 
-insert ignore into admin(nameAdmin,passAdmin) values("admin","admin123");
+insert ignore into admin(`name`,`pass`) values("admin","admin123");

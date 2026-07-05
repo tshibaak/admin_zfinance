@@ -9,12 +9,11 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // View::view('index');
+       View::view('auth.login');
     }
 
     public function contact(){
     
-session_start();
 
 require dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
