@@ -23,10 +23,9 @@
         return $first === $second ? true : false;
       }
 
-      public static function lengthError(string $str, int $minLength = 3,int $maxLength = 8):string
+      public static function lengthError(string $str, int $min = 3,int $max = 8):bool
       {
-        return strlen($str) < $minLength || strlen($str) > $maxLength ?
-                "The string must have  >" . $minLength ."  and   <= ". $maxLength : $str;
+        return strlen($str) < $min || strlen($str) > $max ? false : true;
       }
       
       public static function randUUID(int $length = 20):string

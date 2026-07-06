@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 * {
   margin: 0;
   padding: 0;
@@ -97,7 +97,7 @@ body {
   font-size: 2.5rem;
   font-weight: bold;
   color: #1f5f9b;
-=======
+}
 :root {
     color-scheme: light;
     --blue: #0000ff;
@@ -238,7 +238,7 @@ textarea {
 .close:focus-visible {
     outline: 3px solid rgba(255, 255, 255, 0.3);
     outline-offset: 2px;
->>>>>>> f31fb06 (refactor(dashboard): Modification du dashboard)
+
 }
 
 .main {
@@ -248,7 +248,7 @@ textarea {
     padding: 34px;
 }
 
-<<<<<<< HEAD
+
 .table-container {
   background: white;
   padding: 20px;
@@ -265,7 +265,7 @@ table {
 thead {
   background: #0d3b66;
   color: white;
-=======
+}
 .header {
     position: relative;
     display: flex;
@@ -433,12 +433,11 @@ table {
 
 thead {
     color: var(--blue-dark);
->>>>>>> f31fb06 (refactor(dashboard): Modification du dashboard)
+
 }
 
 th,
 td {
-<<<<<<< HEAD
   padding: 12px;
   text-align: left;
   border-bottom: 1px solid #ddd;
@@ -541,7 +540,6 @@ tbody tr:hover {
   /* margin-top:15px;
     line-height:1.7; */
   white-space: pre-wrap;
-=======
     padding: 15px 14px;
     text-align: left;
     vertical-align: top;
@@ -834,5 +832,4 @@ td:first-child {
     .panel-title p {
         margin-top: 4px;
     }
->>>>>>> f31fb06 (refactor(dashboard): Modification du dashboard)
 }

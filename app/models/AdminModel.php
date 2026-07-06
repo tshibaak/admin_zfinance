@@ -4,7 +4,7 @@ namespace App\models;
 
 class AdminModel extends Model
 {
-    protected string $table = 'admin';
+    protected string $table = 'admins';
 
     public function countAll(): int
     {
@@ -14,15 +14,5 @@ class AdminModel extends Model
     public function findAll(): array
     {
         return $this->findBy();
-    }
-
-    public function authenticate(string $username, string $password): bool
-    {
-        $admin = $this->findBy([
-            'nameAdmin' => $username,
-            'passAdmin' => $password,
-        ]);
-
-        return !empty($admin);
     }
 }

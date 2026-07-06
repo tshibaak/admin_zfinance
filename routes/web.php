@@ -7,6 +7,7 @@ use App\View;
 use Router\Router;
 
 Router::get('/',[HomeController::class,'index']);
+Router::post('/login',[AuthController::class,'login']);
 
 Router::get('/admin/dashboard',[AdminController::class,'index']);
 Router::get('/admin/contacts',[AdminController::class,'contacts']);

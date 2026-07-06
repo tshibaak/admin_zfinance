@@ -3,6 +3,8 @@
 namespace App\controllers;
 
 use Helper\Build\Database;
+use Helper\Log\LogManagement;
+use Helper\String\Stringy;
 use Router\Router;
 
 class AuthController extends Controller
@@ -16,54 +18,61 @@ class AuthController extends Controller
         exit;
     }
 
-
     public function login()
     {
-       require dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
-
        $db = Database::Instance();
        
-       $loginRedirect = '../../public/index.php?q=login';
-       $adminRedirect = '../../public/index.php?q=admin';
+       $loginRedirect = Router::route('/');
+       $adminRedirect = Router::route('/admin/dashboard');
        
        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
            header('Location: ' . $loginRedirect);
            exit;
        }
        
-       $user = trim($_POST['username'] ?? '');
-       $pass = trim($_POST['password'] ?? '');
+       $email = $this->sanitize($_POST['email'] ?? '');
+       $pass = $this->sanitize($_POST['password'] ?? '');
        
-       if ($user === '' || $pass === '') {
+       if ($email === '' || $pass === '') {
            $_SESSION['message_error'] = 'Veuillez remplir tous les champs.';
+           header('Location: ' . $loginRedirect);
+           exit;
+       }
+
+       if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+           $_SESSION['message_error'] = 'Adresse email invalide.';
+           header('Location: ' . $loginRedirect);
+           exit;
+       }
+
+       if(!Stringy::lengthError($pass, 7, 20)) {
+           $_SESSION['message_error'] = 'Le mot de passe doit contenir entre 7 et 20 caractères.';
            header('Location: ' . $loginRedirect);
            exit;
        }
        
        try {
-           $stmt = $db->prepare("
-               SELECT COUNT(*)
-               FROM admin
-               WHERE nameAdmin = :nameAdmin
-                 AND passAdmin = :passAdmin
-           ");
-           $stmt->execute([
-               ':nameAdmin' => $user,
-               ':passAdmin' => $pass,
+           $stmt = $db->prepare("SELECT * FROM admins WHERE email = :email LIMIT 1", [
+               ':email' => $email,
            ]);
-       
-           if ((int) $stmt->fetchColumn() > 0) {
+
+           $row = $stmt->fetch();
+          
+           if ($row && password_verify($pass, $row['pass'])) 
+            {
                $_SESSION['admin_logged'] = true;
                header('Location: ' . $adminRedirect);
                exit;
-           }
+            }
        
            $_SESSION['message_error'] = 'Identifiants invalides.';
            header('Location: ' . $loginRedirect);
            exit;
+
        } catch (\PDOException $e) {
            $_SESSION['message_error'] = 'Connexion admin indisponible pour le moment.';
            header('Location: ' . $loginRedirect);
+           LogManagement::Instance()->error('Database error during admin login: ' . $e->getMessage());
            exit;
        }
 

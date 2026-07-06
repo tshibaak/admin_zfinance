@@ -8,18 +8,15 @@ if (!isset($testimonials)) {
 <html lang="fr">
 
 <head>
-    <meta charset="UTF-8">
-<<<<<<< HEAD
+    <meta charset="UTF-8"> return $this->connexion->query($request);
     <title>Témoignages</title>
-    <link rel="stylesheet" href="assets/css/admin.css">
-=======
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Témoignages - Zfinances Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/admin.css">
->>>>>>> f31fb06 (refactor(dashboard): Modification du dashboard)
 </head>
 
 <body>
@@ -29,12 +26,12 @@ if (!isset($testimonials)) {
     <h2>Zfinances Admin</h2>
 
     <ul>
-        <li><a href="/admin/dashboard">🏠 Dashboard</a></li>
-        <li><a href="/admin/contacts">📩 Messages Contact</a></li>
-        <li><a href="/admin/newsletter">📧 Newsletter</a></li>
-        <li><a class="active" href="/admin/testimonials">⭐ Témoignages</a></li>
-        <li><a href="/">↩ Retour au site</a></li>
-        <li><a href="/logout">🚪 Déconnexion</a></li>
+        <li><a href="<?= \Router\Router::route('/admin/dashboard') ?>">🏠 Dashboard</a></li>
+        <li><a href="<?= \Router\Router::route('/admin/contacts') ?>">📩 Messages Contact</a></li>
+        <li><a href="<?= \Router\Router::route('/admin/newsletter') ?>">📧 Newsletter</a></li>
+        <li><a class="active" href="<?= \Router\Router::route('/admin/testimonials') ?>">⭐ Témoignages</a></li>
+        <li><a href="https://www.zfinancesdrc.com/">↩ Retour au site</a></li>
+        <li><a href="<?= \Router\Router::route('/logout') ?>">🚪 Déconnexion</a></li>
     </ul>
 
 </div>
@@ -48,7 +45,7 @@ if (!isset($testimonials)) {
             <p>Centralisez les retours clients et les notes affichées dans l'écosystème Zfinances.</p>
         </div>
         <div class="header-actions">
-            <a class="btn btn-muted" href="/admin/dashboard">Retour dashboard</a>
+            <a class="btn btn-muted" href="<?= \Router\Router::route('/admin/dashboard') ?>">Retour dashboard</a>
         </div>
     </div>
 

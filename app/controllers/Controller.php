@@ -12,10 +12,11 @@
         return self::$controller;
     }
     
-    protected function sanitaze(string $input):string
+    protected function sanitize(string $input):string
     {
        return strip_tags(htmlspecialchars($input));
     }
+
      public static function status(int $status)
     {
       \http_response_code($status);

@@ -1,5 +1,3 @@
-
-
 <!-- <!doctype html>
 <html lang="fr">
 <head>
@@ -10,16 +8,28 @@
 
 <body>
   <h2>Connexion Admin</h2>
-    <?php if(isset($_SESSION['message_error'])): ?>
+    <?php
+
+use Router\Router;
+
+ if(isset($_SESSION['message_error'])): ?>
         <p style="color:red"><?php echo htmlspecialchars($_SESSION['message_error']); ?></p>
     <?php endif; ?>
-  <form method="POST" action="../../../src/api/api_login.php">
+  <form method="POST" action="">
     <div><label>Utilisateur<br><input name="username" required></label></div>
     <div><label>Mot de passe<br><input name="password" type="password" required></label></div>
     <div style="margin-top:12px"><button type="submit">Se connecter</button></div>
   </form>
 </body>
 </html> -->
+
+<?php
+
+if (!empty($_SESSION['admin_logged'])) {
+    header('Location: ' . \Router\Router::route('/admin/dashboard'));
+    exit;
+}
+?>
 
 <!doctype html>
 <html lang="fr">
@@ -131,7 +141,7 @@
 <body>
 
   <div class="login-container">
-    <h2>Connexion Admin</h2>
+    <h2>Connexion</h2>
 
     <?php if(isset($_SESSION['message_error'])): ?>
         <div class="error-message">
@@ -142,10 +152,10 @@
         </div>
     <?php endif; ?>
 
-    <form method="POST" action="../../../src/api/api_login.php">
+    <form method="POST" action="<?= Router::route('/login') ?>">
       <div class="form-group">
-        <label for="username">Utilisateur</label>
-        <input type="text" id="username" name="username" required autocomplete="username">
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" required autocomplete="email">
       </div>
 
       <div class="form-group">

@@ -6,6 +6,7 @@ use App\View;
 use App\models\ContactModel;
 use App\models\SubscriberModel;
 use App\models\TestimonialModel;
+use Router\Router;
 
 class AdminController extends Controller
 {
@@ -20,10 +21,10 @@ class AdminController extends Controller
 
     public function index()
     {
-        // if (!$this->ensureAdminSession()) {
-        //     header('Location: /login');
-        //     exit;
-        // }
+        if (!$this->ensureAdminSession()) {
+            header('Location:'. Router::route('/'));
+            exit;
+        }
 
         $contactModel = new ContactModel();
         $subscriberModel = new SubscriberModel();
@@ -39,10 +40,10 @@ class AdminController extends Controller
 
     public function contacts()
     {
-        // if (!$this->ensureAdminSession()) {
-        //     header('Location: /login');
-        //     exit;
-        // }
+        if (!$this->ensureAdminSession()) {
+            header('Location:'. Router::route('/'));
+            exit;
+        }
 
         $contactModel = new ContactModel();
         View::view('admin.contacts', [
@@ -52,10 +53,10 @@ class AdminController extends Controller
 
     public function newsletter()
     {
-        // if (!$this->ensureAdminSession()) {
-        //     header('Location: /login');
-        //     exit;
-        // }
+        if (!$this->ensureAdminSession()) {
+            header('Location: '.  Router::route('/'));
+            exit;
+        }
 
         $subscriberModel = new SubscriberModel();
         View::view('admin.newsletter', [
@@ -65,10 +66,10 @@ class AdminController extends Controller
 
     public function testimonials()
     {
-        // if (!$this->ensureAdminSession()) {
-        //     header('Location: /login');
-        //     exit;
-        // }
+        if (!$this->ensureAdminSession()) {
+            header('Location: '.  Router::route('/'));
+            exit;
+        }
 
         $testimonialModel = new TestimonialModel();
         View::view('admin.testimonials', [
