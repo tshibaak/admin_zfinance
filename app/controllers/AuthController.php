@@ -14,7 +14,7 @@ class AuthController extends Controller
         session_unset();
         session_destroy();
          
-        header("Location: ". Router::route('/login'));
+        header("Location: ". Router::route('/'));
         exit;
     }
 
