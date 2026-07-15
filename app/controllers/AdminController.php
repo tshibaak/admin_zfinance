@@ -51,18 +51,7 @@ class AdminController extends Controller
         ]);
     }
 
-    public function newsletter()
-    {
-        if (!$this->ensureAdminSession()) {
-            header('Location: '.  Router::route('/'));
-            exit;
-        }
 
-        $subscriberModel = new SubscriberModel();
-        View::view('admin.newsletter', [
-            'subscribers' => $subscriberModel->findAll(),
-        ]);
-    }
 
     public function testimonials()
     {

@@ -75,11 +75,11 @@ class Database
         catch (\PDOException $e) 
         {
             LogManagement::Instance()->error($e->getMessage());
-            return [];
+            return new \PDOException($e->getMessage());
         }
         catch(\RuntimeException $e){
             LogManagement::Instance()->error($e->getMessage());
-            return [];
+            return  new \RuntimeException($e->getMessage());
         }
 
        
