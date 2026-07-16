@@ -38,18 +38,7 @@ class AdminController extends Controller
         ]);
     }
 
-    public function contacts()
-    {
-        if (!$this->ensureAdminSession()) {
-            header('Location:'. Router::route('/'));
-            exit;
-        }
 
-        $contactModel = new ContactModel();
-        View::view('admin.contacts', [
-            'contacts' => $contactModel->findAll(),
-        ]);
-    }
 
 
 

@@ -4,6 +4,7 @@ use App\controllers\AdminController;
 use App\controllers\AuthController;
 use App\controllers\HomeController;
 use App\controllers\SubscriberController;
+use App\controllers\ContactController;
 use App\View;
 use Router\Router;
 
@@ -11,7 +12,7 @@ Router::get('/',[HomeController::class,'index']);
 Router::post('/login',[AuthController::class,'login']);
 
 Router::get('/admin/dashboard',[AdminController::class,'index']);
-Router::get('/admin/contacts',[AdminController::class,'contacts']);
+Router::get('/admin/contacts',[ContactController::class,'index']);
 Router::get('/admin/subscribers',[SubscriberController::class,'index']);
 Router::get('/admin/temoignages',[AdminController::class,'testimonials']);
 Router::get('/logout',[AuthController::class,'logout']);

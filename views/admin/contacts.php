@@ -1,6 +1,7 @@
 <?php
-if (!isset($contacts)) {
+if (!isset($contacts) && !isset($pendings)) {
     $contacts = [];
+    $pendings = 0;
 }
 ?>
 <!DOCTYPE html>
@@ -30,15 +31,15 @@ if (!isset($contacts)) {
         </li>
 
         <li>
-            <a class="active" href="<?= \Router\Router::route('/admin/contacts') ?>">📩 Messages Contact (<?= count($contacts) ?>)</a>
+            <a class="active" href="<?= \Router\Router::route('/admin/contacts') ?>">📩 Messages Contact (<?= $pendings ?? 0  ?>)</a>
         </li>
 
         <li>
-            <a href="<?= \Router\Router::route('/admin/newsletter') ?>">📧 Newsletter</a>
+            <a href="<?= \Router\Router::route('/admin/subscribers') ?>">📧 Newsletter</a>
         </li>
 
         <li>
-            <a href="<?= \Router\Router::route('/admin/testimonials') ?>">⭐ Témoignages</a>
+            <a href="<?= \Router\Router::route('/admin/temoignages') ?>">⭐ Témoignages</a>
         </li>
 
         <li>
@@ -69,7 +70,7 @@ if (!isset($contacts)) {
         <div class="panel-title">
             <div>
                 <h2>Demandes reçues</h2>
-                <p><?= count($contacts) ?> message(s) dans la boîte de réception.</p>
+                <p><?= count($contacts ?? 0) ?> message(s) dans la boîte de réception.</p>
             </div>
         </div>
 
@@ -94,24 +95,21 @@ if (!isset($contacts)) {
                 </tr>
             <?php endif; ?>
 
-            <?php foreach($contacts as $contact): ?>
+            <?php foreach($contacts ?? [] as $contact): ?>
 
                 <tr>
 
-                    <td><?= htmlspecialchars($contact['nom']) ?></td>
+                    <td><?= htmlspecialchars($contact['name']) ?></td>
 
                     <td><?= htmlspecialchars($contact['email']) ?></td>
 
                     <td class="message-cell"><?= htmlspecialchars($contact['sujet']) ?></td>
 
                     <td>
-
                         <?php if($contact['statut']=="lu"): ?>
-
                             <span class="badge badge-read">
                                 Lu
                             </span>
-
                         <?php else: ?>
 
                             <span class="badge badge-unread">
@@ -119,23 +117,20 @@ if (!isset($contacts)) {
                             </span>
 
                         <?php endif; ?>
-
                     </td>
 
                     <td><?= date('d/m/Y H:i', strtotime($contact['created_at'])) ?></td>
-
                     <td>
-<button
-    class="action-btn btn-view"
-    data-id="<?= $contact['id'] ?>"
-    data-nom="<?= htmlspecialchars($contact['nom'], ENT_QUOTES, 'UTF-8') ?>"
-    data-email="<?= htmlspecialchars($contact['email'], ENT_QUOTES, 'UTF-8') ?>"
-    data-tel="<?= htmlspecialchars($contact['telephone'], ENT_QUOTES, 'UTF-8') ?>"
-    data-message="<?= htmlspecialchars($contact['message'], ENT_QUOTES, 'UTF-8') ?>"
->
-    Voir
-</button>
-
+                        <button
+                            class="action-btn btn-view"
+                            data-id="<?= $contact['id'] ?>"
+                            data-nom="<?= htmlspecialchars($contact['name'], ENT_QUOTES, 'UTF-8') ?>"
+                            data-email="<?= htmlspecialchars($contact['email'], ENT_QUOTES, 'UTF-8') ?>"
+                            data-tel="<?= htmlspecialchars($contact['phone'], ENT_QUOTES, 'UTF-8') ?>"
+                            data-message="<?= htmlspecialchars($contact['message'], ENT_QUOTES, 'UTF-8') ?>"
+                        >
+                            Voir
+                        </button>
                     </td>
 
                 </tr>
@@ -209,10 +204,9 @@ if (!isset($contacts)) {
                 openModal();
 
                 // mark as read
-                fetch('/admin/mark_as_read.php', {
+                fetch(`/api/contacts/${id}/read`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: 'id=' + encodeURIComponent(id)
+                    headers: { 'Content-Type': 'application/json' },
                 })
                 .then(res => res.text())
                 .then(res => {
