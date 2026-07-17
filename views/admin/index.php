@@ -44,11 +44,11 @@ if (!isset($unread)) {
         </li>
 
         <li>
-            <a href="<?= \Router\Router::route('/admin/newsletter') ?>">📧 Newsletter</a>
+            <a href="<?= \Router\Router::route('/admin/subscribers') ?>">📧 Newsletter</a>
         </li>
 
         <li>
-            <a href="<?= \Router\Router::route('/admin/testimonials') ?>">⭐ Témoignages</a>
+            <a href="<?= \Router\Router::route('/admin/temoignages') ?>">⭐ Témoignages</a>
         </li>
 
         <li>

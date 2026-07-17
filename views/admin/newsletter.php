@@ -28,8 +28,8 @@ $subs = $subscribers;
     <ul>
         <li><a href="<?= \Router\Router::route('/admin/dashboard') ?>">🏠 Dashboard</a></li>
         <li><a href="<?= \Router\Router::route('/admin/contacts') ?>">📩 Messages Contact</a></li>
-        <li><a class="active" href="<?= \Router\Router::route('/admin/newsletter') ?>">📧 Newsletter</a></li>
-        <li><a href="<?= \Router\Router::route('/admin/testimonials') ?>">⭐ Témoignages</a></li>
+        <li><a class="active" href="<?= \Router\Router::route('/admin/subscribers') ?>">📧 Newsletter</a></li>
+        <li><a href="<?= \Router\Router::route('/admin/temoignages') ?>">⭐ Témoignages</a></li>
         <li><a href="https://www.zfinancesdrc.com/">↩ Retour au site</a></li>
         <li><a href="<?= \Router\Router::route('/logout') ?>">🚪 Déconnexion</a></li>
     </ul>

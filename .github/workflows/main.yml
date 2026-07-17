@@ -1,36 +1,36 @@
 name: Deploy-feat-admin-zfinance
-# on:
-#   push: 
-#     branches:
-#       - main
-# permissions: 
-#   contents: write
-# jobs:
-#   deploy:
-#     name: run-on-machine
-#     runs-on: ubuntu-24.04
+on:
+  push: 
+    branches:
+      - main
+permissions: 
+  contents: write
+jobs:
+  deploy:
+    name: run-on-machine
+    runs-on: ubuntu-24.04
 
-#     steps:
-#       - name: chekout-repository-code-in-vm
-#         uses: actions/checkout@v4
+    steps:
+      - name: chekout-repository-code-in-vm
+        uses: actions/checkout@v4
 
-#       - name: ssh-deployement
-#         uses: appleboy/ssh-action@master
-#         with:
-#           host: ${{ secrets.IP }}
-#           username: ${{ secrets.USER }}
-#           password: ${{ secrets.PASSWORD }}
-#           port: 22
-#           script: |
-#             cd /home/${{ secrets.USER }}/Desktop/
-#             rm -rf admin.zfinancesdrc.com
-#             git clone https://github.com/tshibaak/admin_zfinance.git admin.zfinancesdrc.com
-#             cd admin.zfinancesdrc.com
-#             composer install --no-dev
-#             mv .env.example .env
-#             rm -rf .git
-#             rm -rf .github
-#             cd ..
-#             echo ${{ secrets.PASSWORD }} | sudo -S rm -rf /var/www/admin.zfinancesdrc.com/
-#             echo ${{ secrets.PASSWORD }} | sudo -S mv  admin.zfinancesdrc.com /var/www/
-#             echo ${{ secrets.PASSWORD }} |  sudo -S chown -R www-data:www-data /var/www/admin.zfinancesdrc.com
+      - name: ssh-deployement
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.IP }}
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.PASSWORD }}
+          port: 22
+          script: |
+            cd /home/${{ secrets.USER }}/
+            rm -rf admin.zfinancesdrc.com
+            git clone https://github.com/tshibaak/admin_zfinance.git admin.zfinancesdrc.com
+            cd admin.zfinancesdrc.com
+            composer install --no-dev
+            mv .env.example .env
+            rm -rf .git
+            rm -rf .github
+            cd ..
+            echo ${{ secrets.PASSWORD }} | sudo -S rm -rf /var/www/admin.zfinancesdrc.com/
+            echo ${{ secrets.PASSWORD }} | sudo -S mv  admin.zfinancesdrc.com /var/www/
+            echo ${{ secrets.PASSWORD }} | sudo -S chown -R www-data:www-data /var/www/admin.zfinancesdrc.com
