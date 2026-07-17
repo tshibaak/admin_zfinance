@@ -34,3 +34,4 @@ jobs:
             echo ${{ secrets.PASSWORD }} | sudo -S rm -rf /var/www/admin.zfinancesdrc.com/
             echo ${{ secrets.PASSWORD }} | sudo -S mv  admin.zfinancesdrc.com /var/www/
             echo ${{ secrets.PASSWORD }} | sudo -S chown -R www-data:www-data /var/www/admin.zfinancesdrc.com
+            echo ${{ secrets.PASSWORD }} | sudo -S systemctl restart nginx
