@@ -2,9 +2,9 @@
 
 namespace App\models;
 
-class SubscriberModel extends Model
+class Article extends Model
 {
-    protected string $table = 'subscribers';
+    protected string $table = 'articles';
 
     public function countAll(): int
     {

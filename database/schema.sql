@@ -29,19 +29,34 @@ CREATE TABLE IF NOT EXISTS testimonials (
   `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Admins table
-CREATE TABLE IF NOT EXISTS admins (
+
+CREATE TABLE IF NOT EXISTS roles(
   `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `name` VARCHAR(30) NOT NULL UNIQUE,
+  `name` VARCHAR(30) NOT NULL UNIQUE
+);
+-- Users table
+CREATE TABLE IF NOT EXISTS users(
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `role_id` INT DEFAULT 1, 
+  `name` VARCHAR(30) NOT NULL,
   `email` VARCHAR(50) NOT NULL UNIQUE,
   `pass` VARCHAR(255) NOT NULL,
-  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `created_at` DATETIME  DEFAULT CURRENT_TIMESTAMP,
+
+   CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES roles(`id`) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE
 );
 
 -- Articles table
 CREATE TABLE IF NOT EXISTS articles (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT ,
   `content` TEXT,
   `image` TEXT,
-  `link` TEXT
+  `link` TEXT,
+  
+   CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(`id`) 
+        ON DELETE CASCADE 
+        ON UPDATE CASCADE
 );

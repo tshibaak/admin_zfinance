@@ -14,45 +14,15 @@ if (!isset($contacts) && !isset($pendings)) {
     <title>Messages contact - Zfinances Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/admin.css">
 </head>
 
 <body>
 
-    <div class="sidebar">
+<?php require dirname(__DIR__) . '/layouts/sidebar.php'; ?>
 
-        <h2>Zfinances Admin</h2>
-
-        <ul>
-
-        <li>
-            <a href="<?= \Router\Router::route('/admin/dashboard') ?>">🏠 Dashboard</a>
-        </li>
-
-        <li>
-            <a class="active" href="<?= \Router\Router::route('/admin/contacts') ?>">📩 Messages Contact (<?= $pendings ?? 0  ?>)</a>
-        </li>
-
-        <li>
-            <a href="<?= \Router\Router::route('/admin/subscribers') ?>">📧 Newsletter</a>
-        </li>
-
-        <li>
-            <a href="<?= \Router\Router::route('/admin/temoignages') ?>">⭐ Témoignages</a>
-        </li>
-
-        <li>
-            <a href="https://www.zfinancesdrc.com/">↩ Retour au site</a>
-        </li>
-
-        <li>
-            <a href="<?= \Router\Router::route('/logout') ?>">🚪 Déconnexion</a>
-        </li>
-
-        </ul>
-
-    </div>
 <div class="main">
 
     <div class="header">

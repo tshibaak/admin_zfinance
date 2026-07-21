@@ -1,7 +1,7 @@
 <?php
 
 namespace App\controllers;
-use App\models\SubscriberModel;
+use App\models\Subscriber;
 use Router\Router;
 use App\View;
 use Helper\Build\Database;
@@ -25,7 +25,7 @@ class SubscriberController extends Controller
             exit;
         }
 
-        $subscriberModel = new SubscriberModel();
+        $subscriberModel = new Subscriber();
         View::view('admin.newsletter', [
             'subscribers' => $subscriberModel->findAll(),
         ]);

@@ -4,7 +4,7 @@ namespace App\controllers;
 
 use App\View;
 use App\models\ContactModel;
-use App\models\SubscriberModel;
+use App\models\Subscriber;
 use App\models\TestimonialModel;
 use Router\Router;
 
@@ -27,7 +27,7 @@ class AdminController extends Controller
         }
 
         $contactModel = new ContactModel();
-        $subscriberModel = new SubscriberModel();
+        $subscriberModel = new Subscriber();
         $testimonialModel = new TestimonialModel();
 
         View::view('admin.index', [
@@ -37,9 +37,6 @@ class AdminController extends Controller
             'unread' => $contactModel->countUnread(),
         ]);
     }
-
-
-
 
 
     public function testimonials()

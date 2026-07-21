@@ -2,9 +2,9 @@
 
 namespace App\models;
 
-class AdminModel extends Model
+class User extends Model
 {
-    protected string $table = 'admins';
+    protected string $table = 'users';
 
     public function countAll(): int
     {
