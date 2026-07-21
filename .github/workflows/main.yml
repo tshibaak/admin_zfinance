@@ -26,7 +26,6 @@ jobs:
             rm -rf admin.zfinancesdrc.com
             git clone https://github.com/tshibaak/admin_zfinance.git admin.zfinancesdrc.com
             cd admin.zfinancesdrc.com
-            composer install --no-dev
             mv .env.example .env
             rm -rf .git
             rm -rf .github
