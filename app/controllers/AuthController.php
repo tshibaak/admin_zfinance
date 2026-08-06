@@ -20,7 +20,7 @@ class AuthController extends Controller
 
     public function login()
     {
-       $db = Database::Instance();
+       $database = Database::Instance();
        
        $loginRedirect = Router::route('/');
        $adminRedirect = Router::route('/admin/dashboard');
@@ -52,7 +52,7 @@ class AuthController extends Controller
        }
        
        try {
-           $stmt = $db->prepare("SELECT users.*,roles.name as `role` 
+           $stmt = $database->prepare("SELECT users.*,roles.name as `role` 
                          FROM users INNER JOIN roles 
                          ON users.role_id = roles.id  
                          WHERE email = :email LIMIT 1", [

@@ -18,12 +18,9 @@ Router::get('/admin/contacts',[ContactController::class,'index']);
 Router::get('/admin/subscribers',[SubscriberController::class,'index']);
 Router::get('/admin/temoignages',[AdminController::class,'testimonials']);
 Router::get('/admin/users',[UserController::class,'index']);
+Router::get('/admin/users/create',[UserController::class,'create']);
+Router::post('/admin/users/store',[UserController::class,'store']);
+Router::get('/admin/users/[i:id]/show',[UserController::class,'show']);
 Router::get('/admin/articles',[ArticleController::class,'index']);
-
 Router::get('/logout',[AuthController::class,'logout']);
-
-Router::get('/reset-password',function(){
-     View::view('password.reset-password');
-});
-
 ?>

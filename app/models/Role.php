@@ -11,9 +11,9 @@ class Role extends Model
         return $this->count();
     }
 
-    public function findAll(): array
+    public function all(): array
     {
-        return $this->findBy();
+        return $this->findBy(mode: \PDO::FETCH_OBJ);
     }
 
     public function getRole(int $id)
