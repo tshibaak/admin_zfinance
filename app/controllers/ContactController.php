@@ -6,6 +6,7 @@
  use Router\Router;
  use App\View;
  use Helper\Build\Database;
+ use Core\Session;
 
  class ContactController extends Controller 
  {
@@ -15,13 +16,17 @@
             session_start();
         }
 
-        return !empty($_SESSION['admin_logged']);
+        return !empty($_SESSION['auth']);
     }
 
      public function index()
     {
         if (!$this->ensureAdminSession()) {
             header('Location:'. Router::route('/'));
+            exit;
+        }
+        if(!Session::ensureRole('semi-admin',$_SESSION['user']['role'])){
+            \Router\Router::respondWithError(403);
             exit;
         }
 

@@ -6,29 +6,32 @@ use Router\Router;
 use App\View;
 use Helper\Build\Database;
 use Helper\String\Stringy;
+use Core\Session;
 
 class SubscriberController extends Controller
 {
-    private function ensureAdminSession(): bool
+    private function ensureSession(): bool
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
-        return !empty($_SESSION['admin_logged']);
+        return !empty($_SESSION['auth']);
     }
 
     public function index()
     {
-        if (!$this->ensureAdminSession()) {
+        if (!$this->ensureSession()) {
             header('Location: '.  Router::route('/'));
             exit;
         }
+        if(!Session::ensureRole('semi-admin',$_SESSION['user']['role'])){
+            \Router\Router::respondWithError(403);
+            exit;
+        }
 
-        $subscriberModel = new Subscriber();
-        View::view('admin.newsletter', [
-            'subscribers' => $subscriberModel->findAll(),
-        ]);
+        $subscribers = new Subscriber();
+        View::view('admin.newsletter',compact('subscribers'));
     }
 
 

@@ -3,9 +3,7 @@
 
 use App\models\Role;
 use App\View;
-use Override;
-
- class RoleController extends ContactController{
+ class RoleController extends Controller{
  
     public function index()
     {

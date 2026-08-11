@@ -1,6 +1,8 @@
 <div class="sidebar">
     <h2>Zfinances Admin</h2>
     <ul>
+
+    <?php if(isset($_SESSION['user']) && $_SESSION['user']['role'] === "semi-admin"):  ?>
         <li>
             <a class="active" href="<?= \Router\Router::route('/admin/dashboard') ?>">
                 <i class="fas fa-tachometer-alt"></i> Dashboard
@@ -26,16 +28,19 @@
         </li>
 
         <li>
-            <a href="<?= \Router\Router::route('/admin/users') ?>">
-                <i class="fas fa-users"></i> Utilisateurs
-            </a>
-        </li>
-
-        <li>
             <a href="<?= \Router\Router::route('/admin/articles') ?>">
                 <i class="fas fa-newspaper"></i> Articles
             </a>
         </li>
+    <?php endif; ?>
+    
+    <?php if(isset($_SESSION['user']) && $_SESSION['user']['role'] === "admin"): ?>
+        <li>
+            <a href="<?= \Router\Router::route('/admin/users') ?>">
+                <i class="fas fa-users"></i> Utilisateurs
+            </a>
+        </li>
+    <?php endif;?>
 
         <li>
             <a href="https://www.zfinancesdrc.com/">

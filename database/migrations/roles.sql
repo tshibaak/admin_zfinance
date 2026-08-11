@@ -1,3 +1,3 @@
 USE zfinance;
 
-INSERT INTO roles(`name`) VALUES ('admin');
+INSERT INTO roles(`name`) VALUES ("semi-admin");
