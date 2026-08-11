@@ -26,9 +26,8 @@ if (!isset($users)) {
             <h1>Liste des utilisateurs</h1>
             <p>Gestion des comptes utilisateurs enregistrés.</p>
         </div>
-        <div class="header-actions">
-            <a class="px-4 py-2 bg-white text-blue-700 border border-blue-700 rounded font-semibold" href="<?= \Router\Router::route('/admin/dashboard') ?>">Retour</a>
-            <a class="px-4 py-2 bg-blue-600 text-white rounded font-semibold" href="#">Nouvel utilisateur</a>
+          <div class="header-actions">
+            <a class="btn btn-muted" href="<?= \Router\Router::route('/admin/users/create') ?>">Nouvel administrateur</a>
         </div>
     </div>
 
@@ -48,13 +47,13 @@ if (!isset($users)) {
                 <tbody class="bg-white divide-y divide-gray-100">
                     <?php foreach ($users as $user): ?>
                         <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 font-medium text-sm"><?= htmlspecialchars($user['id'] ?? '') ?></td>
-                            <td class="px-6 py-4 text-sm"><?= htmlspecialchars(($user['name'] ?? $u['username'] ?? '')) ?></td>
-                            <td class="px-6 py-4 text-sm"><?= htmlspecialchars($user['email'] ?? '') ?></td>
-                            <td class="px-6 py-4 text-sm"><?= htmlspecialchars($roles->getRole($user['role_id']) ?? 'user') ?></td>
-                            <td class="px-6 py-4 text-sm"><?= htmlspecialchars($user['created_at'] ?? '') ?></td>
+                            <td class="px-6 py-4 font-medium text-sm"><?= htmlspecialchars($user->id) ?></td>
+                            <td class="px-6 py-4 text-sm"><?= htmlspecialchars(($user?->name)) ?></td>
+                            <td class="px-6 py-4 text-sm"><?= htmlspecialchars($user->email) ?></td>
+                            <td class="px-6 py-4 text-sm"><?= htmlspecialchars($roles->getRole($user?->role_id)) ?></td>
+                            <td class="px-6 py-4 text-sm"><?= htmlspecialchars($user?->created_at) ?></td>
                             <td class="px-6 py-4 text-sm">
-                                <a title="Voir" class="inline-flex items-center px-3 py-1 rounded text-white bg-green-600 hover:bg-green-700" href="#"><i class="fa-solid fa-eye"></i></a>
+                                <a title="Voir" class="inline-flex items-center px-3 py-1 rounded text-white bg-green-600 hover:bg-green-700" href=<?= \Router\Router::route('/admin/users/'.$user->id.'/show') ?>><i class="fa-solid fa-eye"></i></a>
                                 <a title="Éditer" class="inline-flex items-center px-3 py-1 rounded text-white bg-yellow-500 hover:bg-yellow-600 ml-2" href="#"><i class="fa-solid fa-pen-to-square"></i></a>
                                 <a title="Supprimer" class="inline-flex items-center px-3 py-1 rounded text-white bg-red-600 hover:bg-red-700 ml-2" href="#"><i class="fa-solid fa-trash"></i></a>
                             </td>

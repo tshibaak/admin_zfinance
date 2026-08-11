@@ -6,24 +6,34 @@ use Helper\Build\Database;
 use Helper\Log\LogManagement;
 use Helper\String\Stringy;
 use Router\Router;
-
+use App\View;
+use Core\Session;
 class AuthController extends Controller
 {
+    public function index()
+    {
+      if(Session::sessionExist()){
+        $role = $_SESSION['user']['role'];
+        $route = $role === "admin" ? Router::route('/admin/users') : Router::route('/admin/dashboard');
+        header('Location: '.$route);
+      }
+       View::view('auth.login');
+    }
+
     public function logout()
     {
         session_unset();
         session_destroy();
-         
         header("Location: ". Router::route('/'));
         exit;
     }
 
     public function login()
     {
-       $db = Database::Instance();
+       $database = Database::Instance();
        
        $loginRedirect = Router::route('/');
-       $adminRedirect = Router::route('/admin/dashboard');
+       $adminRedirect = '';
        
        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
            header('Location: ' . $loginRedirect);
@@ -52,18 +62,22 @@ class AuthController extends Controller
        }
        
        try {
-           $stmt = $db->prepare("SELECT users.*,roles.name as `role` 
+           $stmt = $database->prepare("SELECT users.id,
+                        users.name,users.email,users.pass,roles.name as `role` 
                          FROM users INNER JOIN roles 
                          ON users.role_id = roles.id  
                          WHERE email = :email LIMIT 1", [
                ':email' => $email,
            ]);
 
-           $row = $stmt->fetch();
+           $user = $stmt->fetch();
           
-           if ($row && password_verify($pass, $row['pass'])) 
+     
+           if ($user && password_verify($pass, $user['pass'])) 
             {
-               $_SESSION['admin_logged'] = true;
+               $_SESSION['auth'] = true;
+               $_SESSION['user'] = $user;
+               $adminRedirect = $_SESSION['user']['role'] === "admin" ? Router::route('/admin/users') : Router::route('/admin/dashboard') ;
                header('Location: ' . $adminRedirect);
                exit;
             }

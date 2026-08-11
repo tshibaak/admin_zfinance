@@ -1,13 +1,14 @@
 <?php
 
-namespace App\controllers;
-
+use App\controllers\Controller;
+use App\models\TestimonialModel;
 use App\View;
-use App\models\Article;
 use Router\Router;
 use Core\Session;
-class ArticleController extends Controller
-{
+
+// controlleur des temoignages
+class TestiMonialController extends Controller{
+
     private function ensureSession(): bool
     {
         if (session_status() === PHP_SESSION_NONE) {
@@ -16,8 +17,7 @@ class ArticleController extends Controller
 
         return !empty($_SESSION['auth']);
     }
-
-
+    
     public function index()
     {
         if (!$this->ensureSession()) {
@@ -30,9 +30,11 @@ class ArticleController extends Controller
             exit;
         }
 
-        $articles = new Article();
-        View::view('admin.articles.index', [
-            'articles' => $articles->findAll(),
-        ]);
+        /**
+         * listes des temoiganges
+        */ 
+        $testimonials = new TestimonialModel();
+        View::view('admin.testimonials',compact('testimonials'));
     }
 }
+?>

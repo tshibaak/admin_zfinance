@@ -13,10 +13,7 @@ class Model
         return Database::Instance();
     }
 
-    public function all(): array
-    {
-        return $this->db()->query('SELECT * FROM ' . $this->table)->fetchAll(\PDO::FETCH_ASSOC);
-    }
+ 
 
     public function count(array $conditions = []): int
     {
@@ -34,7 +31,7 @@ class Model
         return (int) $this->db()->query($sql)->fetchColumn();
     }
 
-    public function findBy(array $conditions = []): array
+    public function findBy(array $conditions = [],int $mode = \PDO::FETCH_ASSOC): array
     {
         $sql = 'SELECT * FROM ' . $this->table;
         if ($conditions) {
@@ -43,10 +40,11 @@ class Model
                 $parts[] = $column . ' = :' . $column;
             }
             $sql .= ' WHERE ' . implode(' AND ', $parts);
+           
             $stmt = $this->db()->prepare($sql, $conditions);
-            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            return $stmt->fetchAll($mode);
         }
 
-        return $this->db()->query($sql)->fetchAll(\PDO::FETCH_ASSOC);
+        return $this->db()->query($sql)->fetchAll($mode);
     }
 }

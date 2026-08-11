@@ -7,23 +7,27 @@ use App\models\ContactModel;
 use App\models\Subscriber;
 use App\models\TestimonialModel;
 use Router\Router;
-
+use Core\Session;
 class AdminController extends Controller
 {
-    private function ensureAdminSession(): bool
+    private function ensureSession(): bool
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
 
-        return !empty($_SESSION['admin_logged']);
+        return !empty($_SESSION['auth']);
     }
 
     public function index()
     {
-        if (!$this->ensureAdminSession()) {
+        if (!$this->ensureSession()) {
             header('Location:'. Router::route('/'));
             exit;
+        }
+
+        if(Session::ensureRole('admin',$_SESSION['user']['role'])){
+            \Router\Router::respondWithError(403);
         }
 
         $contactModel = new ContactModel();
@@ -39,16 +43,5 @@ class AdminController extends Controller
     }
 
 
-    public function testimonials()
-    {
-        if (!$this->ensureAdminSession()) {
-            header('Location: '.  Router::route('/'));
-            exit;
-        }
 
-        $testimonialModel = new TestimonialModel();
-        View::view('admin.testimonials', [
-            'testimonials' => $testimonialModel->findAll(),
-        ]);
-    }
 }
