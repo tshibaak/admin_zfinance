@@ -27,7 +27,7 @@ if (!isset($articles)) {
         </div>
         <div class="header-actions">
             <a class="px-4 py-2 bg-white text-blue-700 border border-blue-700 rounded font-semibold" href="<?= \Router\Router::route('/admin/dashboard') ?>">Retour</a>
-            <a class="px-4 py-2 bg-blue-600 text-white rounded font-semibold" href="#">Nouvel article</a>
+            <a class="px-4 py-2 bg-blue-600 text-white rounded font-semibold" href="<?= \Router\Router::route('/admin/articles/create') ?>">Nouvel article</a>
         </div>
     </div>
 

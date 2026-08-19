@@ -46,8 +46,8 @@
    }
 
     public function create(){}
-    public function delete(){}
+    public function delete($id){}
     public function  index(){}
-    public function update(){}
+    public function update($id){}
   }
 ?>

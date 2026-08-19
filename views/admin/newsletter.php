@@ -1,10 +1,3 @@
-<?php
-if (!isset($subscribers)) {
-    $subscribers = [];
-}
-$subs = $subscribers;
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -22,7 +15,7 @@ $subs = $subscribers;
 
 <body>
 
-<?php require dirname(__DIR__) . '/layouts/sidebar.php'; ?>
+<?php require dirname(__DIR__) . '/layouts/sidebar.php';  ?>
 
 <div class="main">
 
@@ -41,7 +34,7 @@ $subs = $subscribers;
         <div class="panel-title">
             <div>
                 <h2>Liste des abonnés</h2>
-                <p><?= count($subs) ?> email(s) inscrit(s).</p>
+                <p><?= htmlentities($subscribers?->countAll()) ?> email(s) inscrit(s).</p>
             </div>
         </div>
 
@@ -56,13 +49,13 @@ $subs = $subscribers;
 
             <tbody>
 
-            <?php if (empty($subs)): ?>
+            <?php if (empty($subscribers?->findAll())): ?>
                 <tr>
                     <td class="empty-state" colspan="2">Aucun abonné newsletter pour le moment.</td>
                 </tr>
             <?php endif; ?>
 
-            <?php foreach($subs as $sub): ?>
+            <?php foreach($subscribers?->findAll() ?? [] as $sub): ?>
 
                 <tr>
                     <td><?= htmlspecialchars($sub['email']) ?></td>

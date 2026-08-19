@@ -1,5 +1,7 @@
 <?php
 
+namespace App\controllers;
+
 use App\controllers\Controller;
 use App\models\TestimonialModel;
 use App\View;

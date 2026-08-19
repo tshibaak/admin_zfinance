@@ -19,9 +19,9 @@
 
   <style>
     :root {
-      --primary: #0d3b66;
-      --secondary: #1f5f9b;
-      --background: #f4f7fb;
+      --primary: #001b92;
+      --secondary: #1107ca;
+      --background: #eaeaec;
     }
 
     * {
@@ -33,8 +33,8 @@
       margin: 0;
       background:
         linear-gradient(135deg,
-          #f4f7fb 0%,
-          #e8f0f8 100%);
+          #f1f3fad6 0%,
+          #d1d8e0 100%);
       font-family: "Segoe UI", Roboto, Arial, sans-serif;
     }
 
@@ -49,11 +49,11 @@
     .login-card {
       width: 100%;
       max-width: 430px;
-      background: #ffffff;
+      background: #e7e7ef;
       border: none;
       border-radius: 18px;
       overflow: hidden;
-      box-shadow: 0 15px 45px rgba(13, 59, 102, 0.15);
+      box-shadow: 0 15px 45px rgba(20, 13, 102, 0.35);
     }
 
     /* Header */
@@ -77,8 +77,8 @@
       align-items: center;
       justify-content: center;
 
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(199, 197, 213, 0.46);
+      border: 1px solid rgba(217, 217, 222, 0.25);
 
       border-radius: 50%;
 
@@ -110,14 +110,14 @@
     }
 
     .input-group-text {
-      background: #f5f8fb;
-      border: 1px solid #d9e2ec;
+      background: #f5f6fb;
+      border: 1px solid #d7daef;
       color: var(--secondary);
     }
 
     .form-control {
       min-height: 48px;
-      border: 1px solid #d9e2ec;
+      border: 1px solid #d9daec;
       font-size: 15px;
     }
 
@@ -125,13 +125,13 @@
       border-color: var(--secondary);
 
       box-shadow:
-        0 0 0 0.2rem rgba(31, 95, 155, 0.15);
+        0 0 0 0.2rem rgba(31, 43, 155, 0.15);
     }
 
     .btn-login {
       min-height: 48px;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
 
       background: var(--primary);
       color: white;
@@ -148,7 +148,7 @@
       transform: translateY(-1px);
 
       box-shadow:
-        0 6px 15px rgba(13, 59, 102, 0.2);
+        0 6px 15px rgba(20, 9, 106, 0.2);
     }
 
     .btn-login:active {
@@ -162,10 +162,10 @@
       align-items: flex-start;
       gap: 10px;
 
-      background: #fff1f1;
-      color: #b42318;
+      background: #efc2c2;
+      color: #e30707;
 
-      border-left: 4px solid #dc3545;
+      border-left: 4px solid #c80000;
       border-radius: 7px;
 
       padding: 12px 14px;
@@ -185,7 +185,7 @@
       text-align: center;
       padding: 0 35px 30px;
 
-      color: #7a8694;
+      color: #020662;
       font-size: 12px;
     }
 

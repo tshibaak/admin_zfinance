@@ -20,7 +20,7 @@ class Role extends Model
     {
      return match($id){
           1 => 'admin',
-          2 => 'semi-admin',
+          2,4 => 'semi-admin',
           default => 'unknow'
         };
     }

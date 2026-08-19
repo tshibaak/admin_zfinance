@@ -40,7 +40,7 @@ if (!isset($testimonials)) {
         <div class="panel-title">
             <div>
                 <h2>Avis clients</h2>
-                <p><?= count($testimonials) ?> témoignage(s) enregistré(s).</p>
+                <p><?= htmlentities($testimonials->countAll()) ?> Témoignage(s) enregistré(s).</p>
             </div>
         </div>
 
@@ -58,13 +58,13 @@ if (!isset($testimonials)) {
 
             <tbody>
 
-            <?php if (empty($testimonials)): ?>
+            <?php if (empty($testimonials->findAll())): ?>
                 <tr>
                     <td class="empty-state" colspan="5">Aucun témoignage pour le moment.</td>
                 </tr>
             <?php endif; ?>
 
-            <?php foreach($testimonials as $testimonial): ?>
+            <?php foreach($testimonials->findAll() as $testimonial): ?>
 
                 <tr>
                     <td><?= htmlspecialchars($testimonial['author']) ?></td>
