@@ -3,6 +3,7 @@
 
  use App\App; 
  use App\controllers\Controller;
+use App\View;
 
  class Router
    {
@@ -106,10 +107,15 @@
 
        public static function respondWithError(int $status, string $message = '')
        {
-           Controller::status($status);
-           $statusText = $message ?: self::getStatusText($status);
-        
-           echo "<h1>$status</h1><p>$statusText</p>";
+                http_response_code($status);
+                $statusText = $message ?: self::getStatusText($status);
+
+                View::view('layouts.error', [
+                   'status' => $status,
+                   'statusText' => $statusText,
+                   'statusLabel' => self::getStatusText($status),
+                   'requestUri' => self::$uri .$_SERVER['REQUEST_URI'] ?? '/',
+                ]);
        }
 
        private static function getStatusText(int $statusCode): string

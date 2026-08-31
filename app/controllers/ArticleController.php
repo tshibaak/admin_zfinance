@@ -35,4 +35,21 @@ class ArticleController extends Controller
             'articles' => $articles->findAll(),
         ]);
     }
+
+    public function create()
+    {
+        if (!$this->ensureSession()) {
+            header('Location: '.  Router::route('/'));
+            exit;
+        }
+
+        if(!Session::ensureRole('semi-admin',$_SESSION['user']['role'])){
+            \Router\Router::respondWithError(403);
+            exit;
+        }
+
+        View::view('admin.articles.create');
+    }
+
+
 }

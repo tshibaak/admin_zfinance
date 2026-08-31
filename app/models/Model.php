@@ -13,7 +13,6 @@ class Model
         return Database::Instance();
     }
 
- 
 
     public function count(array $conditions = []): int
     {
@@ -31,7 +30,7 @@ class Model
         return (int) $this->db()->query($sql)->fetchColumn();
     }
 
-    public function findBy(array $conditions = [],int $mode = \PDO::FETCH_ASSOC): array
+    public function findBy(array $conditions = [],int $mode = \PDO::FETCH_ASSOC,int $fetch = 1): array | \stdClass | false
     {
         $sql = 'SELECT * FROM ' . $this->table;
         if ($conditions) {
@@ -42,7 +41,7 @@ class Model
             $sql .= ' WHERE ' . implode(' AND ', $parts);
            
             $stmt = $this->db()->prepare($sql, $conditions);
-            return $stmt->fetchAll($mode);
+            return  $fetch === 1 ? $stmt->fetch($mode) : $stmt->fetchAll($mode);
         }
 
         return $this->db()->query($sql)->fetchAll($mode);

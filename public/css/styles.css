@@ -10,24 +10,24 @@
 }
 
 :root {
-    --blue-primary: #0000FF;
-    --blue-dark1: #0000CC;
-    --blue-dark2: #000099;
-    --blue-dark3: #000066;
-    --blue-light1: #1A1AFF;
-    --blue-light2: #3333FF;
-    --blue-light3: #4D4DFF;
-    --blue-light4: #6666FF;
-    --blue-light5: #9999FF;
-    --blue-light6: #B3B3FF;
+    --blue-primary: #0000cc;
+    --blue-dark1: #18187b;
+    --blue-dark2: #111165;
+    --blue-dark3: #0b0b4d;
+    --blue-light1: #2727f6;
+    --blue-light2: #6b6bfa;
+    --blue-light3: #8b8bf6;
+    --blue-light4: #8585fb;
+    --blue-light5: #a3a3ff;
+    --blue-light6: #b4b4fb;
     --blue-light7: #CCCCFF;
     --blue-light8: #E6E6FF;
     --blue-light9: #F0F0FF;
-    --blue-light10: #F5F5FF;
+    --blue-light10: #f4f4ff;
     --blue-light11: #FAFAFF;
-    --white: #FFFFFF;
+    --white: #f7f7fd;
     --black: #000000;
-    --yellow-key: #FFD700;
+    --yellow-key: #ffa514;
 }
 
 html {
@@ -108,11 +108,11 @@ a {
 }
 
 .popup-content.success{
-    border-left:5px solid #28a745;
+    border-left:5px solid #018d22;
 }
 
 .popup-content.error{
-    border-left:5px solid #dc3545;
+    border-left:5px solid #dc2727;
 }
 
 .close-popup{
@@ -179,7 +179,7 @@ a {
     background: var(--blue-dark1);
     border-color: var(--blue-dark1);
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 255, 0.25);
+    box-shadow: 0 8px 24px rgba(3, 3, 97, 0.752);
 }
 
 .btn-outline {
@@ -218,7 +218,7 @@ a {
 }
 
 #header.scrolled {
-    box-shadow: 0 2px 20px rgba(0, 0, 255, 0.1);
+    box-shadow: 0 2px 20px rgba(3, 3, 97, 0.752);
 }
 
 .header-inner {
@@ -512,7 +512,7 @@ a {
     border: 1px solid var(--blue-light8);
     border-radius: 20px;
     padding: 32px;
-    box-shadow: 0 20px 60px rgba(0, 0, 255, 0.1);
+    box-shadow: 0 20px 60px rgba(2, 2, 97, 0.899);
 }
 
 .hero-card-header {
@@ -1122,7 +1122,7 @@ a {
 .social-btn {
     width: 36px;
     height: 36px;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.115);
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -1132,7 +1132,7 @@ a {
 }
 
 .social-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(132, 134, 159, 0.15);
 }
 
 .footer-col h4 {

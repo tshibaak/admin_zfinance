@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,10 +12,10 @@
 
     <style>
         :root {
-            --primary: #001b92;
-            --secondary: #1107ca;
-            --background: #eaeaec;
-            --light-blue: #f1f2fb;
+           --primary: #001b92;
+           --secondary: #1107ca;
+           --background: #eaeaec;
+           --light-blue: #f1f6fb;
         }
 
         body {
@@ -32,7 +30,7 @@
         .admin-card {
             width: 100%;
             max-width: 520px;
-            background: #fff;
+            background: var(--background);
             border: none;
             border-radius: 16px;
             box-shadow: 0 10px 35px rgba(13, 59, 102, 0.15);
@@ -70,7 +68,7 @@
         .form-control,
         .form-select {
             min-height: 46px;
-            border: 1px solid #d5d9ea;
+            border: 1px solid #d5e0ea;
             border-radius: 9px;
             padding: 10px 13px;
             transition: all 0.2s ease;
@@ -78,8 +76,8 @@
 
         .form-control:focus,
         .form-select:focus {
-            border-color: var(--secondary);
-            box-shadow: 0 0 0 0.2rem rgba(31, 43, 155, 0.48);
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.2rem rgba(19, 29, 137, 0.83);
         }
 
         .btn-create {
@@ -104,27 +102,24 @@
         }
 
         .required {
-            color: #db2336;
+            color: #d81b2e;
         }
     </style>
 
 </head>
 
 <body>
-
     <div class="admin-card">
-
         <!-- Header -->
         <div class="admin-header">
-            <h2>Créer un  utilisateur</h2>
-            <p>Ajoutez un nouvel utilisateur à la plateforme.</p>
+            <h2>Modifier un utilisateur</h2>
+            <p>Modifiez les informations de l'utilisateur.</p>
         </div>
 
         <!-- Formulaire -->
         <div class="admin-body">
 
-            <form action="<?= \Router\Router::route('/admin/users/store') ?>" method="POST">
-
+            <form action="<?= \Router\Router::route('/admin/users/' . htmlentities($user->id) . '/update') ?>" method="POST">
                 <!-- Nom -->
                 <div class="form-group">
                     <label for="name" class="form-label">
@@ -137,6 +132,7 @@
                         id="name"
                         class="form-control"
                         placeholder="Entrez le nom complet"
+                        value="<?= htmlentities($user?->name) ?>"
                         required>
                 </div>
 
@@ -152,6 +148,7 @@
                         id="email"
                         class="form-control"
                         placeholder="exemple@email.com"
+                        value="<?= htmlentities($user?->email) ?>"
                         required>
                 </div>
 
@@ -177,7 +174,7 @@
                     </label>
 
                     <select
-                        name="role"
+                        name="role_id"
                         id="role"
                         class="form-select"
                         required>
@@ -186,7 +183,7 @@
                         </option>
 
                         <?php foreach ($roles ?? [] as $role): ?>
-                            <option value="<?= $role?->id ?>">
+                            <option value="<?= $role?->id ?>" <?= $user?->role_id === $role?->id ? 'selected' : '' ?>>
                                 <?= $role?->name ?>
                             </option>
                         <?php endforeach; ?>
@@ -196,17 +193,13 @@
                 <!-- Bouton -->
                 <div class="mt-4">
                     <button type="submit" class="btn btn-create">
-                        Créer l'administrateur
+                        Modifier l'utilisateur
                     </button>
                 </div>
 
             </form>
-
         </div>
-
-
     </div>
 
 </body>
-
 </html>
