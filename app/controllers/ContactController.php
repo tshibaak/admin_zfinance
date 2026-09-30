@@ -1,145 +1,220 @@
 <?php
 
- namespace  App\controllers;
+namespace App\controllers;
 
- use App\models\ContactModel;
- use Router\Router;
- use App\View;
- use Helper\Build\Database;
- use Core\Session;
+use App\models\ContactModel;
+use App\View;
+use Core\Session;
+use Helper\Build\Database;
+use Router\Router;
 
- class ContactController extends Controller 
- {
-    private function ensureAdminSession(): bool
+class ContactController extends Controller
+{
+    public function index(): void
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        return !empty($_SESSION['auth']);
-    }
-
-     public function index()
-    {
-        if (!$this->ensureAdminSession()) {
-            header('Location:'. Router::route('/'));
-            exit;
-        }
-        if(!Session::ensureRole('semi-admin',$_SESSION['user']['role'])){
-            \Router\Router::respondWithError(403);
-            exit;
-        }
+        $this->authorizeSemiAdmin();
 
         $contacts = new ContactModel();
-        $pendings = count($contacts->findBy(['statut' => 'non_lu']));
-   
-    
-        View::view('admin.contacts', [
-            'contacts' => $contacts->findAll(),
-            'pendings' => $pendings
-        ]);
-    }
+        $filters = [
+            'statut' => $_GET['statut'] ?? '',
+            'q' => trim($_GET['q'] ?? ''),
+        ];
 
-   public function store()
-   {
-    $datas = $this->inputs(); 
-
-    $required = ['name', 'email', 'sujet', 'message'];
-    foreach ($required as $field) {
-        if (empty($datas[$field])) {
-            $this->status(422)->json([
-                "status" => "error",
-                "message" => "Le champ '$field' est obligatoire"
-            ]);
+        $list = $contacts->findAll();
+        if ($filters['statut'] !== '') {
+            $list = array_values(array_filter(
+                $list,
+                static fn($c) => ($c->statut ?? '') === $filters['statut']
+            ));
         }
+        if ($filters['q'] !== '') {
+            $q = mb_strtolower($filters['q']);
+            $list = array_values(array_filter(
+                $list,
+                static function ($c) use ($q) {
+                    $hay = mb_strtolower(
+                        ($c->name ?? '') . ' ' . ($c->email ?? '') . ' ' . ($c->sujet ?? '') . ' ' . ($c->message ?? '')
+                    );
+                    return str_contains($hay, $q);
+                }
+            ));
+        }
+
+        View::view('admin.contacts.index', [
+            'pageTitle' => 'Messages contact',
+            'contacts' => $list,
+            'pendings' => $contacts->countUnread(),
+            'filters' => $filters,
+        ], 'layouts.admin');
     }
 
-    $email = filter_var($datas['email'], FILTER_SANITIZE_EMAIL);
+    public function show(array $params): void
+    {
+        $this->authorizeSemiAdmin();
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $this->status(422)->json(
-         [
-            "status" => "error",
-            "message" => "Email invalide"
-        ]);
-        return;
+        $model = new ContactModel();
+        $contact = $model->findOne((int) $params['id']);
+
+        if (!$contact) {
+            Router::respondWithError(404);
+            exit;
+        }
+
+        if (($contact->statut ?? '') === 'non_lu') {
+            $model->markAsRead((int) $contact->id);
+            $contact->statut = 'lu';
+        }
+
+        View::view('admin.contacts.show', [
+            'pageTitle' => 'Message #' . $contact->id,
+            'contact' => $contact,
+        ], 'layouts.admin');
     }
 
-    try {
-     
-        Database::Instance()->prepare(
-            "INSERT INTO contacts (name, email, phone, sujet, message) VALUES (?, ?, ?, ?, ?)",
-            [
-                $datas['name'],
-                $email,
-                $datas['phone'] ?? null,
-                $datas['sujet'],
-                $datas['message']
-            ]
-        );
+    public function markRead(array $params): void
+    {
+        $this->authorizeSemiAdmin();
 
-        $this->status(201)->json([
-            "status" => "success",
-            "message" => "Contact enregistré avec succès",
-            "data" => [
-                "name" => $datas['name'],
-                "email" => $email,
-                "sujet" => $datas['sujet']
-            ]
-        ]);
-        return;
+        $model = new ContactModel();
+        $contact = $model->findOne((int) $params['id']);
 
-    } catch (\PDOException $e) {
-        $this->status(500)->json(
-        [
-            "status" => "error",
-            "message" => "Erreur serveur: " . $e->getMessage()
-        ]);
-         return;
+        if (!$contact) {
+            Router::respondWithError(404);
+            exit;
+        }
+
+        $model->markAsRead((int) $contact->id);
+        Session::flash('success', 'Message marqué comme lu.');
+        header('Location: ' . Router::route('/admin/contacts'));
+        exit;
     }
-  }
 
-public function read(mixed $id)
-{
-    $id = (int)$id['id'];
-    try {
-     
-        if (empty($id) || !is_numeric($id)) {
+    public function markUnread(array $params): void
+    {
+        $this->authorizeSemiAdmin();
+
+        $model = new ContactModel();
+        $contact = $model->findOne((int) $params['id']);
+
+        if (!$contact) {
+            Router::respondWithError(404);
+            exit;
+        }
+
+        $model->markAsUnread((int) $contact->id);
+        Session::flash('success', 'Message marqué comme non lu.');
+        header('Location: ' . Router::route('/admin/contacts'));
+        exit;
+    }
+
+    public function delete($params): void
+    {
+        $this->authorizeSemiAdmin();
+
+        $id = (int) ($params['id'] ?? 0);
+        $model = new ContactModel();
+        $contact = $model->findOne($id);
+
+        if (!$contact) {
+            Router::respondWithError(404);
+            exit;
+        }
+
+        $model->delete($id);
+        Session::flash('success', 'Message supprimé.');
+        header('Location: ' . Router::route('/admin/contacts'));
+        exit;
+    }
+
+    /** API publique — formulaire site. */
+    public function store(): void
+    {
+        $datas = $this->inputs();
+
+        $required = ['name', 'email', 'sujet', 'message'];
+        foreach ($required as $field) {
+            if (empty($datas[$field])) {
+                $this->status(422)->json([
+                    'status' => 'error',
+                    'message' => "Le champ '$field' est obligatoire",
+                ]);
+            }
+        }
+
+        $email = filter_var($datas['email'], FILTER_SANITIZE_EMAIL);
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $this->status(422)->json([
-                "status" => "error",
-                "message" => "ID invalide"
+                'status' => 'error',
+                'message' => 'Email invalide',
             ]);
             return;
         }
 
-        $updated = Database::Instance()->prepare(
-            "UPDATE contacts SET statut = 'lu' WHERE id = ?",
-            [$id]
-        );
+        try {
+            Database::Instance()->prepare(
+                'INSERT INTO contacts (name, email, phone, sujet, message) VALUES (?, ?, ?, ?, ?)',
+                [
+                    $datas['name'],
+                    $email,
+                    $datas['phone'] ?? null,
+                    $datas['sujet'],
+                    $datas['message'],
+                ]
+            );
 
-        if ($updated->rowCount() === 0) {
-            $this->status(404)->json([
-                "status" => "error",
-                "message" => "Message introuvable"
+            $this->status(201)->json([
+                'status' => 'success',
+                'message' => 'Contact enregistré avec succès',
+                'data' => [
+                    'name' => $datas['name'],
+                    'email' => $email,
+                    'sujet' => $datas['sujet'],
+                ],
             ]);
-            return;
+        } catch (\PDOException $e) {
+            $this->status(500)->json([
+                'status' => 'error',
+                'message' => 'Erreur serveur: ' . $e->getMessage(),
+            ]);
         }
+    }
 
-        $this->status(200)->json([
-            "status" => "success",
-            "message" => "Message marqué comme lu",
-            "data" => ["id" => $id]
-        ]);
-         return;
+    /** API — marquer lu (legacy front). */
+    public function read(mixed $id): void
+    {
+        $id = (int) ($id['id'] ?? $id);
 
-    } catch (\PDOException $e) {
-        $this->status(500)->json([
-            "status" => "error",
-            "message" => "Erreur serveur: " . $e->getMessage()
-        ]);
-         return;
+        try {
+            if ($id <= 0) {
+                $this->status(422)->json([
+                    'status' => 'error',
+                    'message' => 'ID invalide',
+                ]);
+                return;
+            }
+
+            $model = new ContactModel();
+            if (!$model->findOne($id)) {
+                $this->status(404)->json([
+                    'status' => 'error',
+                    'message' => 'Message introuvable',
+                ]);
+                return;
+            }
+
+            $model->markAsRead($id);
+
+            $this->status(200)->json([
+                'status' => 'success',
+                'message' => 'Message marqué comme lu',
+                'data' => ['id' => $id],
+            ]);
+        } catch (\PDOException $e) {
+            $this->status(500)->json([
+                'status' => 'error',
+                'message' => 'Erreur serveur: ' . $e->getMessage(),
+            ]);
+        }
     }
 }
-
- }
-?>

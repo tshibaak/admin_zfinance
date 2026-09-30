@@ -35,14 +35,19 @@ class CategoryController extends Controller
     {
         $this->authorize();
         $categories = new Category();
-     
-        View::view('admin.categories.index', ['categories' => $categories->all()]);
+
+        View::view('admin.categories.index', [
+            'pageTitle' => 'Catégories',
+            'categories' => $categories->all(),
+        ], 'layouts.admin');
     }
 
     public function create(): void
     {
         $this->authorize();
-        View::view('admin.categories.create');
+        View::view('admin.categories.create', [
+            'pageTitle' => 'Nouvelle catégorie',
+        ], 'layouts.admin');
     }
 
     public function show(array $params): void
@@ -56,10 +61,13 @@ class CategoryController extends Controller
             exit;
         }
 
-        View::view('admin.categories.show', ['category' => $item]);
+        View::view('admin.categories.show', [
+            'pageTitle' => $item->name,
+            'category' => $item,
+        ], 'layouts.admin');
     }
 
-    public function update($params)
+    public function update($params): void
     {
         $this->authorize();
         $category = new Category();
@@ -71,38 +79,42 @@ class CategoryController extends Controller
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = $_POST['name'] ?? '';
+            $name = trim($_POST['name'] ?? '');
 
-            if (empty($name)) {
-                Router::respondWithError(400, 'Le nom de la catégorie est requis.');
+            if ($name === '') {
+                Session::flash('error', 'Le nom de la catégorie est requis.');
+                header('Location: ' . Router::route('/admin/categories/' . (int) $params['id'] . '/edit'));
                 exit;
             }
 
             $category->update(['name' => $name], (int) $params['id']);
+            Session::flash('success', 'Catégorie mise à jour.');
             header('Location: ' . Router::route('/admin/categories'));
             exit;
         }
     }
-   
+
     public function store(): void
     {
         $this->authorize();
         $category = new Category();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $name = $_POST['name'] ?? '';
-            $description = $_POST['description'] ?? '';
+            $name = trim($_POST['name'] ?? '');
 
-            if (empty($name)) {
-                Router::respondWithError(400, 'Le nom de la catégorie est requis.');
+            if ($name === '') {
+                Session::flash('error', 'Le nom de la catégorie est requis.');
+                header('Location: ' . Router::route('/admin/categories/create'));
                 exit;
             }
 
-            $category->create(['name' => $name ]);
+            $category->create(['name' => $name]);
+            Session::flash('success', 'Catégorie créée avec succès.');
             header('Location: ' . Router::route('/admin/categories'));
             exit;
         }
     }
+
     public function edit(array $params): void
     {
         $this->authorize();
@@ -114,10 +126,13 @@ class CategoryController extends Controller
             exit;
         }
 
-        View::view('admin.categories.edit', ['category' => $item]);
+        View::view('admin.categories.edit', [
+            'pageTitle' => 'Modifier la catégorie',
+            'category' => $item,
+        ], 'layouts.admin');
     }
 
-    public function delete($params)
+    public function delete($params): void
     {
         $this->authorize();
         $category = new Category();
@@ -129,6 +144,7 @@ class CategoryController extends Controller
         }
 
         $category->delete((int) $params['id']);
+        Session::flash('success', 'Catégorie supprimée.');
         header('Location: ' . Router::route('/admin/categories'));
         exit;
     }

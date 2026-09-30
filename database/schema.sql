@@ -48,15 +48,31 @@ CREATE TABLE IF NOT EXISTS users(
         ON UPDATE CASCADE
 );
 
--- Articles table
+-- Categories (avant articles pour la FK)
+CREATE TABLE IF NOT EXISTS categories (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(255) NOT NULL UNIQUE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Articles table (contenu portfolio / blog)
 CREATE TABLE IF NOT EXISTS articles (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `user_id` INT ,
+  `category_id` INT NULL,
+  `status` ENUM('pending', 'published') NOT NULL DEFAULT 'pending',
+  `title` VARCHAR(255) NOT NULL DEFAULT '',
+  `excerpt` TEXT NULL,
+  `user_id` INT NULL,
   `content` TEXT,
   `image` TEXT,
   `link` TEXT,
-  
-   CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(`id`) 
-        ON DELETE CASCADE 
-        ON UPDATE CASCADE
+  `sort_order` INT NOT NULL DEFAULT 0,
+  `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(`id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT fk_category_id FOREIGN KEY (category_id) REFERENCES categories(`id`)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
 );

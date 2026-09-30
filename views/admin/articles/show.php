@@ -1,6 +1,64 @@
-<!DOCTYPE html>
-<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Article — Administration</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"><link rel="stylesheet" href="../css/admin.css"></head>
-<body>
-<?php require dirname(__DIR__, 2) . '/layouts/sidebar.php'; ?>
-<main class="main" id="main-content"><header class="header"><div><span class="eyebrow">Articles</span><h1>Aperçu de l’article</h1><p>Visualisez le contenu avant ou après sa publication.</p></div><div class="header-actions"><a class="btn btn-muted" href="<?= \Router\Router::route('/admin/articles') ?>"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour aux articles</a><a class="btn" href="#"><i class="fa-solid fa-pen" aria-hidden="true"></i> Modifier</a></div></header><article class="article-preview"><header class="article-preview-header"><span class="badge badge-read">Publié</span><p class="article-preview-meta"><i class="fa-regular fa-calendar" aria-hidden="true"></i> 19 août 2026 <span aria-hidden="true">·</span> <i class="fa-regular fa-user" aria-hidden="true"></i> Administration</p><h2>Comprendre les bases de l'investissement</h2><p class="article-preview-lead">Les notions essentielles pour démarrer sereinement son parcours d'investisseur et construire une stratégie adaptée à ses objectifs.</p></header><div class="article-cover-placeholder" aria-label="Emplacement de l'image de couverture"><i class="fa-regular fa-image" aria-hidden="true"></i><span>Image de couverture</span></div><div class="article-preview-content"><p>Investir consiste à placer une partie de son épargne dans des actifs afin de poursuivre un objectif financier sur le long terme.</p><h3>Définir son objectif</h3><p>Avant tout investissement, définissez un horizon de placement, votre tolérance au risque et le montant que vous pouvez mobiliser.</p><h3>Diversifier progressivement</h3><p>Une diversification réfléchie aide à répartir le risque. Prenez le temps de comprendre chaque produit avant de l’ajouter à votre stratégie.</p></div></article></main>
-</body></html>
+<header class="header">
+    <div>
+        <span class="eyebrow">Articles</span>
+        <h1><?= htmlspecialchars($article->title ?: 'Article', ENT_QUOTES, 'UTF-8') ?></h1>
+        <p>Aperçu détaillé du contenu sélectionné.</p>
+    </div>
+    <div class="header-actions">
+        <a class="btn btn-muted" href="<?= \Router\Router::route('/admin/articles') ?>">
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Retour
+        </a>
+        <a class="btn" href="<?= \Router\Router::route('/admin/articles/' . $article->id . '/edit') ?>">
+            <i class="fa-solid fa-pen" aria-hidden="true"></i> Modifier
+        </a>
+    </div>
+</header>
+
+<article class="resource-show" aria-labelledby="article-show-title">
+    <header class="resource-show-header">
+        <div>
+            <h2 id="article-show-title"><?= htmlspecialchars($article->title ?: 'Sans titre', ENT_QUOTES, 'UTF-8') ?></h2>
+            <p class="resource-meta">
+                <?php if (($article->status ?? '') === 'published'): ?>
+                    <span class="status-badge status-published">Publié</span>
+                <?php else: ?>
+                    <span class="status-badge status-pending">Brouillon</span>
+                <?php endif; ?>
+                <span><?= htmlspecialchars($article->category_name ?? 'Sans catégorie', ENT_QUOTES, 'UTF-8') ?></span>
+                <span>Par <?= htmlspecialchars($article->author_name ?? '—', ENT_QUOTES, 'UTF-8') ?></span>
+                <?php if (!empty($article->created_at)): ?>
+                    <span>Le <?= htmlspecialchars(date('d/m/Y à H:i', strtotime($article->created_at)), ENT_QUOTES, 'UTF-8') ?></span>
+                <?php endif; ?>
+            </p>
+        </div>
+        <form method="post" action="<?= \Router\Router::route('/admin/articles/' . $article->id . '/delete') ?>" onsubmit="return confirm('Supprimer cet article ?');">
+            <button type="submit" class="btn btn-danger">
+                <i class="fa-solid fa-trash" aria-hidden="true"></i> Supprimer
+            </button>
+        </form>
+    </header>
+
+    <?php if (!empty($article->image)): ?>
+        <figure class="resource-cover">
+            <img src="<?= htmlspecialchars($article->image, ENT_QUOTES, 'UTF-8') ?>" alt="Image de couverture">
+        </figure>
+    <?php endif; ?>
+
+    <?php if (!empty($article->excerpt)): ?>
+        <section class="resource-excerpt" aria-label="Résumé">
+            <p><?= nl2br(htmlspecialchars($article->excerpt, ENT_QUOTES, 'UTF-8')) ?></p>
+        </section>
+    <?php endif; ?>
+
+    <section class="resource-body" aria-label="Contenu">
+        <?= nl2br(htmlspecialchars($article->content ?? '', ENT_QUOTES, 'UTF-8')) ?>
+    </section>
+
+    <?php if (!empty($article->link)): ?>
+        <footer class="resource-footer">
+            <a class="btn btn-muted" href="<?= htmlspecialchars($article->link, ENT_QUOTES, 'UTF-8') ?>" target="_blank" rel="noopener noreferrer">
+                <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Ouvrir le lien
+            </a>
+        </footer>
+    <?php endif; ?>
+</article>
