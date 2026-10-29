@@ -3,47 +3,35 @@
 namespace App\controllers;
 
 use App\View;
+use App\models\Article;
 use App\models\ContactModel;
 use App\models\Subscriber;
 use App\models\TestimonialModel;
 use Router\Router;
-use Core\Session;
+
 class SemiAdminController extends Controller
 {
-    private function ensureSession(): bool
+    public function index(): void
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
-
-        return !empty($_SESSION['auth']);
-    }
-
-    public function index()
-    {
-        if (!$this->ensureSession()) {
-            header('Location:'. Router::route('/'));
-            exit;
-        }
-        
-
-        if(!Session::ensureRole('semi-admin',$_SESSION['user']['role'])){
-            \Router\Router::respondWithError(403);
-            exit;
-        }
+        $this->authorizeSemiAdmin();
 
         $contactModel = new ContactModel();
         $subscriberModel = new Subscriber();
         $testimonialModel = new TestimonialModel();
+        $articleModel = new Article();
+
+        $recentContacts = array_slice($contactModel->findAll(), 0, 5);
+        $recentTestimonials = array_slice($testimonialModel->findAll(), 0, 3);
 
         View::view('admin.index', [
+            'pageTitle' => 'Tableau de bord',
             'totalContacts' => $contactModel->countAll(),
             'totalSubscribers' => $subscriberModel->countAll(),
             'totalTestimonials' => $testimonialModel->countAll(),
+            'totalArticles' => $articleModel->countAll(),
             'unread' => $contactModel->countUnread(),
-        ]);
+            'recentContacts' => $recentContacts,
+            'recentTestimonials' => $recentTestimonials,
+        ], 'layouts.admin');
     }
-
-
-
 }

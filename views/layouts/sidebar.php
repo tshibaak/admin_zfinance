@@ -20,14 +20,14 @@ $userName = \Core\Session::userName();
     </header>
 
     <nav class="sidebar-nav" aria-label="Menu principal">
-        <p class="sidebar-section-title">Espace de gestion</p>
+        <p class="sidebar-section-title">CRM</p>
         <ul>
             <?php if ($userRole === 'semi-admin'): ?>
                 <li><a class="<?= $isCurrentPath('/admin/dashboard') ? 'active' : '' ?>" href="<?= \Router\Router::route('/admin/dashboard') ?>"><i class="fas fa-chart-pie" aria-hidden="true"></i><span>Tableau de bord</span></a></li>
                 <li><a class="<?= $isCurrentPath('/admin/contacts') ? 'active' : '' ?>" href="<?= \Router\Router::route('/admin/contacts') ?>"><i class="fas fa-envelope" aria-hidden="true"></i><span>Messages contact</span></a></li>
                 <li><a class="<?= $isCurrentPath('/admin/subscribers') ? 'active' : '' ?>" href="<?= \Router\Router::route('/admin/subscribers') ?>"><i class="fas fa-paper-plane" aria-hidden="true"></i><span>Newsletter</span></a></li>
                 <li><a class="<?= $isCurrentPath('/admin/temoignages') ? 'active' : '' ?>" href="<?= \Router\Router::route('/admin/temoignages') ?>"><i class="fas fa-star" aria-hidden="true"></i><span>Témoignages</span></a></li>
-                <li><a class="<?= $isCurrentPath('/admin/articles') ? 'active' : '' ?>" href="<?= \Router\Router::route('/admin/articles') ?>"><i class="fas fa-newspaper" aria-hidden="true"></i><span>Articles</span></a></li>
+                <li><a class="<?= $isCurrentPath('/admin/articles') ? 'active' : '' ?>" href="<?= \Router\Router::route('/admin/articles') ?>"><i class="fas fa-briefcase" aria-hidden="true"></i><span>Portfolio</span></a></li>
                 <li><a class="<?= $isCurrentPath('/admin/categories') ? 'active' : '' ?>" href="<?= \Router\Router::route('/admin/categories') ?>"><i class="fas fa-tags" aria-hidden="true"></i><span>Catégories</span></a></li>
             <?php endif; ?>
             <?php if ($userRole === 'admin'): ?>
